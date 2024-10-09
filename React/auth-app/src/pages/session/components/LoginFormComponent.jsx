@@ -10,7 +10,7 @@ export const LoginFormComponent = () => {
   const { register, handleSubmit } = useForm();
   // forzar redireccionamiento
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const submitForm = (data) => {
     console.log(data);
