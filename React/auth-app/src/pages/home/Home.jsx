@@ -1,10 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserDataContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase/config";
 
 export const Home = () => {
-  const { user } = useContext(UserContext);
-  const logout = () => {};
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  return <>{user ? <h1>{user.email}</h1> : <Link to="/session">INICIAR SESION</Link>}</>;
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setUser(null);
+        navigate("/session");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error(error);
+      });
+  };
+
+  return (
+    <>
+      {user ? (
+        <>
+          <h1>{user.email}</h1>
+          <button onClick={logout}>Cerrar sesion</button>
+        </>
+      ) : (
+        <Link to="/session">INICIAR SESION</Link>
+      )}
+    </>
+  );
 };
